@@ -211,6 +211,7 @@ main(void)
 	char *t1;
 	char *kbmap;
 	char *surfs;
+	char *memes;
 
 	if (!(dpy = XOpenDisplay(NULL))) {
 		fprintf(stderr, "dwmstatus: cannot open display.\n");
@@ -225,15 +226,17 @@ main(void)
 		tmbln = mktimes("KW %W %a %d %b %H:%M %Z %Y", tzberlin);
 		kbmap = execscript("setxkbmap -query | grep layout | cut -d':' -f 2- | tr -d ' '");
 		surfs = execscript("surf-status");
+		memes = execscript("meme-status");
 		t0 = gettemperature("/sys/devices/virtual/thermal/thermal_zone0", "temp");
 		t1 = gettemperature("/sys/devices/virtual/thermal/thermal_zone1", "temp");
 
-		status = smprintf("S:%s K:%s T:%s|%s L:%s B:%s A:%s U:%s %s",
-				surfs, kbmap, t0, t1, avgs, bat, tmar, tmutc,
+		status = smprintf("S:%s M:%s K:%s T:%s|%s L:%s B:%s A:%s U:%s %s",
+				surfs, memes, kbmap, t0, t1, avgs, bat, tmar, tmutc,
 				tmbln);
 		setstatus(status);
 
 		free(surfs);
+		free(memes);
 		free(kbmap);
 		free(t0);
 		free(t1);
