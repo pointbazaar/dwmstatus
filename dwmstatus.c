@@ -204,7 +204,6 @@ main(void)
 	char *status;
 	char *avgs;
 	char *bat;
-	char *tmar;
 	char *tmutc;
 	char *tmbln;
 	char *t0;
@@ -221,7 +220,6 @@ main(void)
 	for (;;sleep(30)) {
 		avgs = loadavg();
 		bat = getbattery("/sys/class/power_supply/BAT0");
-		tmar = mktimes("%H:%M", tzargentina);
 		tmutc = mktimes("%H:%M", tzutc);
 		tmbln = mktimes("KW %W %a %d %b %H:%M %Z %Y", tzberlin);
 		kbmap = execscript("setxkbmap -query | grep layout | cut -d':' -f 2- | tr -d ' '");
@@ -230,8 +228,8 @@ main(void)
 		t0 = gettemperature("/sys/devices/virtual/thermal/thermal_zone0", "temp");
 		t1 = gettemperature("/sys/devices/virtual/thermal/thermal_zone1", "temp");
 
-		status = smprintf("S:%s M:%s K:%s T:%s|%s L:%s B:%s A:%s U:%s %s",
-				surfs, memes, kbmap, t0, t1, avgs, bat, tmar, tmutc,
+		status = smprintf("S:%s M:%s Keyboard:%s Temp:%s|%s Load:%s Bat:%s UTC:%s %s",
+				surfs, memes, kbmap, t0, t1, avgs, bat, tmutc,
 				tmbln);
 		setstatus(status);
 
@@ -242,7 +240,6 @@ main(void)
 		free(t1);
 		free(avgs);
 		free(bat);
-		free(tmar);
 		free(tmutc);
 		free(tmbln);
 		free(status);
