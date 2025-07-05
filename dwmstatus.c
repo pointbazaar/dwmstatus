@@ -20,6 +20,7 @@
 char *tzargentina = "America/Buenos_Aires";
 char *tzutc = "UTC";
 char *tzberlin = "Europe/Berlin";
+char *tztaiwan = "Asia/Taipei";
 
 static Display *dpy;
 
@@ -205,6 +206,7 @@ main(void)
 	char *avgs;
 	char *bat;
 	char *tmutc;
+	char *tmtaiwan;
 	char *tmbln;
 	char *t0;
 	char *t1;
@@ -221,6 +223,7 @@ main(void)
 		avgs = loadavg();
 		bat = getbattery("/sys/class/power_supply/BAT0");
 		tmutc = mktimes("%H:%M", tzutc);
+		tmtaiwan = mktimes("%H:%M", tztaiwan);
 		tmbln = mktimes("KW %W %a %d %b %H:%M %Z %Y", tzberlin);
 		kbmap = execscript("setxkbmap -query | grep layout | cut -d':' -f 2- | tr -d ' '");
 		surfs = execscript("surf-status");
@@ -228,8 +231,8 @@ main(void)
 		t0 = gettemperature("/sys/devices/virtual/thermal/thermal_zone0", "temp");
 		t1 = gettemperature("/sys/devices/virtual/thermal/thermal_zone1", "temp");
 
-		status = smprintf("S:%s M:%s Keyboard:%s Temp:%s|%s Load:%s Bat:%s UTC:%s %s",
-				surfs, memes, kbmap, t0, t1, avgs, bat, tmutc,
+		status = smprintf("S:%s M:%s Keyboard:%s Temp:%s|%s Load:%s Bat:%s UTC:%s Taiwan:%s %s",
+				surfs, memes, kbmap, t0, t1, avgs, bat, tmutc, tmtaiwan,
 				tmbln);
 		setstatus(status);
 
@@ -241,6 +244,7 @@ main(void)
 		free(avgs);
 		free(bat);
 		free(tmutc);
+		free(tmtaiwan);
 		free(tmbln);
 		free(status);
 	}
